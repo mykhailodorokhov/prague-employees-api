@@ -12,7 +12,7 @@ export default function (fastify: FastifyInstance): RouteOptions {
     handler: async (request, reply) => {
       const params = request.params as IdParamsType;
 
-      const employee = employeesModel.getEmployee(params.id);
+      const employee = await employeesModel.getEmployee(fastify, params.id);
       if (!employee) {
         reply.code(404).send({ message: "No employee found" });
       } else {

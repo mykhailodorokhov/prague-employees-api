@@ -9,7 +9,7 @@ export default function (fastify: FastifyInstance): RouteOptions {
     handler: async (request, reply) => {
       const params = request.params as IdParamsType;
 
-      const employees = employeesModel.getEmployees();
+      const employees = await employeesModel.getEmployees(fastify);
       reply.code(200).send(employees);
     },
   };

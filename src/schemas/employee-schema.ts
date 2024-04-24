@@ -3,11 +3,7 @@ import { Static, Type } from "@sinclair/typebox";
 export const employeeBodySchema = Type.Object({
   name: Type.String(),
   title: Type.String(),
-  tribe: Type.Object({
-    id: Type.Integer(),
-    name: Type.String(),
-    department: Type.String(),
-  }),
+  tribe_id: Type.Integer(),
 });
 
 export const idParamsSchema = Type.Object({

@@ -12,8 +12,11 @@ export default function (fastify: FastifyInstance): RouteOptions {
     handler: async (request, reply) => {
       const params = request.params as IdParamsType;
 
-      const affectedId = employeesModel.deleteEmployee(params.id);
-      reply.code(200).send({ affected_id: affectedId });
+      const affectedEntries = await employeesModel.deleteEmployee(
+        fastify,
+        params.id
+      );
+      reply.code(200).send({ affectedEntries });
     },
   };
 }

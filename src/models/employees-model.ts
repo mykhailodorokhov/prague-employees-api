@@ -1,68 +1,47 @@
+import { FastifyInstance } from "fastify";
 import { EmployeeBodyType } from "../schemas/employee-schema";
 
-const employees: Employee[] = [
-  {
-    id: 0,
-    name: "John Doe",
-    title: "Chief Happinnes Officer",
-    tribe: {
-      id: 1,
-      name: "Interstellar",
-      department: "Engineering Excellence",
-    },
-  },
-  {
-    id: 1,
-    name: "Foo Bar",
-    title: "Senior Vibe Specialist",
-    tribe: {
-      id: 1,
-      name: "Interstellar",
-      department: "Engineering Excellence",
-    },
-  },
-];
+const TABLE_NAME = "employees";
 
 export interface Employee {
   id: number;
   name: string;
   title: string;
-  tribe: {
-    id: number;
-    name: string;
-    department: string;
-  };
+  tribe_id: number;
 }
 
-export function getEmployees(): Employee[] {
-  return structuredClone(employees);
+export async function getEmployees(
+  fastify: FastifyInstance
+): Promise<Employee[]> {
+  return await fastify.excel.from(TABLE_NAME).select();
 }
 
-export function getEmployee(id: number): Employee | null {
-  const result = employees.filter((x) => x.id == id);
-  return result.length !== 0 ? structuredClone(result[0]) : null;
+export async function getEmployee(
+  fastify: FastifyInstance,
+  id: number
+): Promise<Employee | null> {
+  const result: Employee[] = await fastify.excel
+    .from(TABLE_NAME)
+    .where({ id })
+    .select();
+
+  if (result.length === 0) {
+    return null;
+  }
+
+  return result[0];
 }
 
-export function createEmployee(employee: EmployeeBodyType): Employee {
-  const newId = Math.max(...employees.map((x) => x.id)) + 1;
-  const newEmployee: Employee = {
-    id: newId,
-    name: employee.name,
-    title: employee.title,
-    tribe: {
-      id: employee.tribe.id,
-      name: employee.tribe.name,
-      department: employee.tribe.department,
-    },
-  };
-  employees.push(newEmployee);
-  return structuredClone(newEmployee);
+export async function createEmployee(
+  fastify: FastifyInstance,
+  employee: EmployeeBodyType
+): Promise<number> {
+  return await fastify.excel.from(TABLE_NAME).insert(employee);
 }
 
-export function deleteEmployee(id: number): number | null {
-  const indexToDelete = employees.findIndex((x) => x.id == id);
-  if (indexToDelete === -1) return null;
-
-  employees.splice(indexToDelete, 1);
-  return id;
+export async function deleteEmployee(
+  fastify: FastifyInstance,
+  id: number
+): Promise<number> {
+  return await fastify.excel.from(TABLE_NAME).where({ id }).del();
 }
