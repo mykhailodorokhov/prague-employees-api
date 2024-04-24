@@ -1,0 +1,22 @@
+import { FastifyInstance, RouteOptions } from "fastify";
+import * as employeesModel from "../models/employees-model";
+import {
+  EmployeeBodyType,
+  employeeBodySchema,
+} from "../schemas/employee-schema";
+
+export default function (fastify: FastifyInstance): RouteOptions {
+  return {
+    method: "POST",
+    url: "/api/employees",
+    schema: {
+      body: employeeBodySchema,
+    },
+    handler: async (request, reply) => {
+      const employee = request.body as EmployeeBodyType;
+
+      const newEmployee = employeesModel.createEmployee(employee);
+      reply.code(200).send(newEmployee);
+    },
+  };
+}
