@@ -8,6 +8,8 @@ import postEmployees from "./post-employees";
 import getTribes from "./get-tribes";
 import getTribesId from "./get-tribes-id";
 
+import getEmployeesReport from "./get-employees-report";
+
 export default async function (fastify: FastifyInstance) {
   fastify.route(getEmployees(fastify));
   fastify.route(getEmployeesId(fastify));
@@ -16,4 +18,6 @@ export default async function (fastify: FastifyInstance) {
 
   fastify.route(getTribes(fastify));
   fastify.route(getTribesId(fastify));
+
+  fastify.route(getEmployeesReport(fastify));
 }

@@ -1,5 +1,5 @@
 import { FastifyInstance } from "fastify";
-import { EmployeeBodyType } from "../schemas/employee-schema";
+import { EmployeeBodyType } from "../schemas/schema";
 
 const TABLE_NAME = "employees";
 
@@ -25,9 +25,7 @@ export async function getEmployee(
     .where({ id })
     .select();
 
-  if (result.length === 0) {
-    return null;
-  }
+  if (result.length === 0) return null;
 
   return result[0];
 }

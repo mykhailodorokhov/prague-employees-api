@@ -1,6 +1,5 @@
 import Fastify from "fastify";
 import knexPlugin from "./plugins/knex-plugin";
-import redisPlugin from "./plugins/redis-plugin";
 import routes from "./routes";
 
 const fastify = Fastify();

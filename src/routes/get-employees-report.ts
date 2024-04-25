@@ -1,13 +1,13 @@
 import { FastifyInstance, RouteOptions } from "fastify";
-import * as tribesModel from "../models/tribes-model";
+import * as reportService from "../services/report-service";
 
 export default function (fastify: FastifyInstance): RouteOptions {
   return {
     method: "GET",
-    url: "/api/tribes",
+    url: "/api/employees/report",
     handler: async (request, reply) => {
-      const tribes = await tribesModel.getTribes(fastify);
-      reply.code(200).send(tribes);
+      const report = await reportService.getReport(fastify);
+      reply.code(200).send(report);
     },
   };
 }

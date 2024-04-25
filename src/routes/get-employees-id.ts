@@ -1,6 +1,6 @@
 import { FastifyInstance, RouteOptions } from "fastify";
 import * as employeesModel from "../models/employees-model";
-import { IdParamsType, idParamsSchema } from "../schemas/employee-schema";
+import { IdParamsType, idParamsSchema } from "../schemas/schema";
 
 export default function (fastify: FastifyInstance): RouteOptions {
   return {

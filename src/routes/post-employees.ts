@@ -1,9 +1,6 @@
 import { FastifyInstance, RouteOptions } from "fastify";
 import * as employeesModel from "../models/employees-model";
-import {
-  EmployeeBodyType,
-  employeeBodySchema,
-} from "../schemas/employee-schema";
+import { EmployeeBodyType, employeeBodySchema } from "../schemas/schema";
 
 export default function (fastify: FastifyInstance): RouteOptions {
   return {
