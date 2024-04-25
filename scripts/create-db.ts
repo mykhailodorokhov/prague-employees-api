@@ -1,8 +1,8 @@
 import knex from "knex";
 import knexConfig from "../knex-config";
 
-type envType = "development";
-const env = (process.env.envionment as envType) ?? "development";
+type envType = "development" | "production";
+const env = (process.env.environment as envType) ?? "development";
 
 async function createDb() {
   const config = knexConfig[env];

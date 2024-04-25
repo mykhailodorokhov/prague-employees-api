@@ -1,10 +1,11 @@
 import knex from "knex";
 import knexConfig from "../../knex-config";
 
-type envType = "development";
-const env = (process.env.envionment as envType) ?? "development";
+type envType = "development" | "production";
+const env = (process.env.environment as envType) ?? "development";
 
 export default function getKnexInstance() {
+  console.log(`knex environment: ${env}`);
   const config = knexConfig[env];
   const knexInstance = knex(config);
 
