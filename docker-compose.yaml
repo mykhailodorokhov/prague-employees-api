@@ -8,6 +8,7 @@ services:
       - 3002:3000
     environment:
       - environment=production
+      - REDIS_HOST=redis
       - DB_HOST=mysql
       - DB_USER=root
       - DB_PASSWORD=password
@@ -15,6 +16,7 @@ services:
     command: npm start
     depends_on:
       - mysql
+      - redis
   mysql:
     image: mysql:latest
     container_name: employees-db
@@ -22,5 +24,9 @@ services:
       - 3306:3306
     environment:
       - MYSQL_ROOT_PASSWORD=password
-
-# docker run -d --name=employees-db -e MYSQL_ROOT_PASSWORD=password -p 3306:3306 mysql:latest
+  redis:
+    image: redis
+    container_name: employees-redis
+    ports:
+      - 6379:6379
+    command: redis-server
