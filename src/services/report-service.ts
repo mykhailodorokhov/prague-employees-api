@@ -3,7 +3,7 @@ import * as employeesModel from "../models/employees-model";
 import * as tribesModel from "../models/tribes-model";
 
 export async function getReport(fastify: FastifyInstance) {
-  const employees = await employeesModel.getEmployees(fastify);
+  const employees = await employeesModel.getEmployees(fastify, {});
   const tribes = await tribesModel.getTribes(fastify);
 
   const report = tribes.map((tribe) => {

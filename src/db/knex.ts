@@ -5,8 +5,7 @@ type envType = "development" | "production";
 const env = (process.env.environment as envType) ?? "development";
 
 export default function getKnexInstance() {
-  console.log("💾 knex initialized....");
-  console.log(`knex environment: ${env}`);
+  console.log(`💾 knex initialized, environment: ${env}`);
   const config = knexConfig[env];
   const knexInstance = knex(config);
 

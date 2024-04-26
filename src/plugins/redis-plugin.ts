@@ -6,7 +6,7 @@ async function redisPlugin(fastify: FastifyInstance) {
   const redisHost = process.env.REDIS_HOST ?? "localhost";
   const url = `redis://${redisHost}:6379`;
 
-  console.log(`connecting to redis via ${url}`);
+  console.log(`🗃️  connecting to redis via ${url}`);
 
   const redis = Redis.createClient({ url });
   redis.connect();
