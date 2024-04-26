@@ -1,6 +1,7 @@
 import { FastifyInstance, RouteOptions } from "fastify";
 import * as employeesModel from "../models/employees-model";
 import { EmployeeBodyType, employeeBodySchema } from "../schemas/schema";
+import { EMPLOYEES_REPORT_CACHE_KEY } from "../services/report-service";
 
 export default function (fastify: FastifyInstance): RouteOptions {
   return {
@@ -16,6 +17,9 @@ export default function (fastify: FastifyInstance): RouteOptions {
         fastify,
         employee
       );
+
+      await fastify.drawer.del(EMPLOYEES_REPORT_CACHE_KEY);
+
       reply.code(200).send(newEmployeeId);
     },
   };
