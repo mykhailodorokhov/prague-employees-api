@@ -20,4 +20,17 @@ describe("GET /api/employees", () => {
     const response = result.json();
     expect(response).toHaveLength(10);
   });
+
+  it("should return 404 when no Employee found", async () => {
+    const res = await app.inject({
+      url: "/api/employees/420",
+      method: "GET",
+    });
+    const response = res.json();
+    const statusCode = res.statusCode;
+    expect(statusCode).toEqual(404);
+    expect(response).toEqual({
+      message: "No employee found",
+    });
+  });
 });

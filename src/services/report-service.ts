@@ -11,6 +11,7 @@ export async function getReport(fastify: FastifyInstance) {
     return JSON.parse(cache);
   }
 
+  // very heavy processing, but cache will help 🙏
   await new Promise((f) => setTimeout(f, 1000));
 
   const employees = await employeesModel.getEmployees(fastify, {});
