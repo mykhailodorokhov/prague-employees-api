@@ -1,7 +1,18 @@
-Run the application via:
+# `employees` backend project 
+### reference implementation
 
-docker-compose build
-docker-compose up
-docker exec -it employees-app npm run db-setup
+- Run the application via:
+  
+  `docker-compose build`
 
-Shut down using docker-compose down
+  `docker-compose up`
+
+  `docker exec -it employees-app npm run db-setup`
+
+- Shut down using 
+
+  `docker-compose down`
+
+- To run test, use 
+
+  `npm test`
