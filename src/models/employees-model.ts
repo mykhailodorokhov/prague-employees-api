@@ -3,17 +3,45 @@ import { EmployeeBodyType, searchQueryType } from "../schemas/schema";
 
 const TABLE_NAME = "employees";
 
-export interface Employee {
+interface EmployeeDTO {
   id: number;
   name: string;
   title: string;
-  tribe_id: number;
+  tribe: {
+    id: number;
+    name: string;
+    department: string;
+  };
 }
+
+interface EmployeeQueryResult {
+  id: number;
+  name: string;
+  title: string;
+  "tribe.id": number;
+  "tribe.name": string;
+  "tribe.department": string;
+}
+
+const mapToEmployeeDTO = (employee: EmployeeQueryResult): EmployeeDTO => {
+  const employeeDetailed: EmployeeDTO = {
+    id: employee.id,
+    name: employee.name,
+    title: employee.title,
+    tribe: {
+      id: employee["tribe.id"],
+      name: employee["tribe.name"],
+      department: employee["tribe.department"],
+    },
+  };
+
+  return employeeDetailed;
+};
 
 export async function getEmployees(
   fastify: FastifyInstance,
   searchQuery: searchQueryType
-): Promise<Employee[]> {
+): Promise<EmployeeDTO[]> {
   const employeesQuery = fastify.excel
     .from(TABLE_NAME)
     .innerJoin("tribes", "tribes.id", "employees.tribe_id")
@@ -21,7 +49,9 @@ export async function getEmployees(
       "employees.id as id",
       "employees.name as name",
       "employees.title as title",
-      "tribes.id as tribe_id"
+      "tribes.id as tribe.id",
+      "tribes.name as tribe.name",
+      "tribes.department as tribe.department"
     );
 
   if (searchQuery.name)
@@ -32,21 +62,32 @@ export async function getEmployees(
     employeesQuery.where({ "tribes.name": searchQuery.tribe });
 
   const employeesQueryResult = await employeesQuery.then();
-  return employeesQueryResult;
+
+  const employees: EmployeeDTO[] = employeesQueryResult.map(mapToEmployeeDTO);
+  return employees;
 }
 
 export async function getEmployee(
   fastify: FastifyInstance,
   id: number
-): Promise<Employee | null> {
-  const result: Employee[] = await fastify.excel
+): Promise<EmployeeDTO | null> {
+  const employeeQueryResult = await fastify.excel
     .from(TABLE_NAME)
-    .where({ id })
-    .select();
+    .select(
+      "employees.id as id",
+      "employees.name as name",
+      "employees.title as title",
+      "tribes.id as tribe.id",
+      "tribes.name as tribe.name",
+      "tribes.department as tribe.department"
+    )
+    .innerJoin("tribes", "tribes.id", "employees.tribe_id")
+    .where({ "employees.id": id })
+    .first();
 
-  if (result.length === 0) return null;
+  if (!employeeQueryResult) return null;
 
-  return result[0];
+  return mapToEmployeeDTO(employeeQueryResult);
 }
 
 export async function createEmployee(

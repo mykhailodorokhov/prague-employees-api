@@ -18,7 +18,7 @@ export async function getReport(fastify: FastifyInstance) {
   const tribes = await tribesModel.getTribes(fastify);
 
   const report = tribes.map((tribe) => {
-    const employeesList = employees.filter((x) => x.tribe_id === tribe.id);
+    const employeesList = employees.filter((x) => x.tribe.id === tribe.id);
     return {
       ...tribe,
       employees: employeesList,
