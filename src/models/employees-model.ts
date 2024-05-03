@@ -24,7 +24,7 @@ interface EmployeeQueryResult {
 }
 
 const mapToEmployeeDTO = (employee: EmployeeQueryResult): EmployeeDTO => {
-  const employeeDetailed: EmployeeDTO = {
+  const employeeDTO: EmployeeDTO = {
     id: employee.id,
     name: employee.name,
     title: employee.title,
@@ -35,7 +35,7 @@ const mapToEmployeeDTO = (employee: EmployeeQueryResult): EmployeeDTO => {
     },
   };
 
-  return employeeDetailed;
+  return employeeDTO;
 };
 
 export async function getEmployees(
